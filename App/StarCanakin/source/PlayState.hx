@@ -8,16 +8,22 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 
 /**
- * A FlxState which can be used for the actual gameplay.
+ * Třída pro jeden level
  */
 class PlayState extends FlxState
 {
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
+	
+	var Player:PlayerRocket;
+	var Enemy:EnemyRocket;
+	
 	override public function create():Void
 	{
 		super.create();
+		//inicializace komponent lvlu
+		Player = PlayerRocket.getPlayer();	//pozor, singleton, při každé smrti je nutné objekt zničit nebo vynulovat	
+		Enemy = new EnemyRocket();
+		
+		
 	}
 	
 	/**
@@ -35,5 +41,25 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		switch(turn)
+		{
+			case Turn.ENEMY:
+				{		
+					
+					if (!Player.Update())
+					{
+						turn = Turn.PLAYER;
+					}					
+				}
+			case Turn.PLAYER:
+				{
+					
+					if (!Enemy.Update())
+					{
+						turn = Turn.ENEMY;
+					}
+					
+				}
+		}	
 	}	
 }
