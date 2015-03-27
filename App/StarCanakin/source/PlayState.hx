@@ -1,5 +1,6 @@
 package;
 
+import board.Board;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -14,9 +15,7 @@ import flixel.addons.display.FlxStarField;
 class PlayState extends FlxState
 {
 	
-	var player:Player;
-	var enemy:Enemy;
-	
+	var board:Board;
 	var stars:FlxStarField2D;
 	
 	override public function create():Void
@@ -26,14 +25,12 @@ class PlayState extends FlxState
 		stars = new FlxStarField2D();
 		stars.setStarSpeed(3,10);
 		add(stars);
-		//FlxG.debugger.drawDebug = true;
-		//inicializace komponent lvlu
-		player = Player.getPlayer();	//pozor, singleton, při každé smrti je nutné objekt zničit nebo vynulovat	
-		player.setPosition(FlxG.width * 0.1, FlxG.height * 0.1);
-		enemy = new Enemy();
 		
-		add(enemy);
-		add(player);		
+		board = new Board();
+		add(board);
+		
+		
+				
 	}
 
 	
@@ -46,5 +43,7 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		
+		
 	}	
 }

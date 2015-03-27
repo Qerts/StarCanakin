@@ -26,7 +26,7 @@ class Player extends FlxSpriteGroup
 	
 	override function update():Void
 	{
-
+		
 	}
 	
 	
