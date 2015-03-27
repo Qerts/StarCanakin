@@ -1,6 +1,4 @@
 package;
-
-import board.Board;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -15,7 +13,6 @@ import flixel.addons.display.FlxStarField;
 class PlayState extends FlxState
 {
 	
-	var board:Board;
 	var stars:FlxStarField2D;
 	var player:Player;
 	var enemy:Enemy;
@@ -27,9 +24,7 @@ class PlayState extends FlxState
 		stars = new FlxStarField2D();
 		stars.setStarSpeed(3,10);
 		add(stars);
-		
-		board = new Board();
-		add(board);
+
 		
 		//FlxG.debugger.drawDebug = true;
 		//inicializace komponent lvlu
@@ -55,20 +50,22 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-				
 		//pokud oba mají status waiting, tak v této třídě porběhne vyhodnocení akcí
-		if (enemy.enemyStatus == Status.WAITING && player.playerStatus == Status.WAITING) 
+		if (enemy.status == Status.WAITING && player.status == Status.WAITING) 
 		{
 			//todo
 			//jakmile se vyhodnotí, přepne se status na done
-			enemy.enemyStatus = Status.DONE;
-			player.playerStatus = Status.DONE;
+			
+			enemy.status = Status.DONE;
+			player.status = Status.DONE;
 		}
-		if (enemy.enemyStatus == Status.DONE && player.playerStatus == Status.DONE)
+		if (enemy.status == Status.DONE && player.status == Status.DONE)
 		{
 			//todo
+			//pokud jsou dokončený všechny případné akce stavu done, přepne se znovu na starting
+			enemy.status = Status.STARTING;
+			player.status = Status.STARTING;
 		}
-		//pokud jsou dokončený všechny případné akce stavu done, přepne se znovu na starting
 		
 	}	
 }

@@ -13,7 +13,7 @@ import flixel.util.FlxCollision;
  * ...
  * @author Qerts
  */
-class Enemy extends FlxSpriteGroup
+class Enemy extends Ship
 {
     var random:Int;
 	
@@ -22,7 +22,9 @@ class Enemy extends FlxSpriteGroup
 	
 	var defaultShellPosition:FlxPoint;
 	
-	public var enemyStatus:Status;
+	
+	
+	
 	
 	public function new() 
 	{
@@ -42,15 +44,25 @@ class Enemy extends FlxSpriteGroup
 		//enemy.makeGraphic(FlxColor.BLUE,32,32);
 		add(enemy);		
 		
-		enemyStatus = Status.DONE;
+		status = Status.WAITING;
 		
+		initStats();
 	}
 	
 	override function update():Void
 	{
 		//pokud je starting, tak se přepne na deciding
+		if (status == Status.STARTING) 
+		{
+			//todo
+			status = Status.DECIDING;
+		}
 		//pokud deciding, tak se rozhodne a přepne se na waiting
-		//pokud tak čeká
+		if (status == Status.DECIDING) 
+		{
+			status = Status.WAITING;
+		}
+		//zbytek ve waitingu se řeší v boardu
 		
 		
 		

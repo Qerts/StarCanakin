@@ -2,13 +2,12 @@ package;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
-class Player extends FlxSpriteGroup
+class Player extends Ship
 {
 	private static var player:Player;
 	
 	var playerSprite:FlxSprite;
 	
-	public var playerStatus:Status;
 	
 	public function new() 
 	{
@@ -16,7 +15,7 @@ class Player extends FlxSpriteGroup
 		playerSprite = new FlxSprite();
 		add(playerSprite);
 		
-		playerStatus = Status.DONE;
+		status = Status.WAITING;
 	}
 	
 	public static inline function getPlayer():Player
@@ -31,8 +30,17 @@ class Player extends FlxSpriteGroup
 	override function update():Void
 	{
 		//pokud je starting, tak se přepne na deciding
+		if (status == Status.STARTING) 
+		{
+			//todo
+			status = Status.DECIDING;
+		}
 		//pokud deciding, tak čeká na vstup od hráče a po přijetí se přepne an waiting
-		//pokud tak čeká
+		if (status == Status.DECIDING) 
+		{
+			status = Status.WAITING;
+		}
+		//zbytek ve waitingu se řeší v boardu
 	}
 	
 	
