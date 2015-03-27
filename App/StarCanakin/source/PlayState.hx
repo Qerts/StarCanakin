@@ -6,7 +6,6 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
-import flixel.addons.display.FlxStarField;
 
 /**
  * Třída pro jeden level
@@ -14,37 +13,53 @@ import flixel.addons.display.FlxStarField;
 class PlayState extends FlxState
 {
 	
-	var player:Player;
-	var enemy:Enemy;
-	
-	var stars:FlxStarField2D;
+	var Player:PlayerRocket;
+	var Enemy:EnemyRocket;
 	
 	override public function create():Void
 	{
 		super.create();
-		
-		stars = new FlxStarField2D();
-		stars.setStarSpeed(3,10);
-		add(stars);
-		//FlxG.debugger.drawDebug = true;
 		//inicializace komponent lvlu
-		player = Player.getPlayer();	//pozor, singleton, při každé smrti je nutné objekt zničit nebo vynulovat	
-		player.setPosition(FlxG.width * 0.1, FlxG.height * 0.1);
-		enemy = new Enemy();
+		Player = PlayerRocket.getPlayer();	//pozor, singleton, při každé smrti je nutné objekt zničit nebo vynulovat	
+		Enemy = new EnemyRocket();
 		
-		add(enemy);
-		add(player);		
+		
 	}
-
 	
+	/**
+	 * Function that is called when this state is destroyed - you might want to 
+	 * consider setting all objects this state uses to null to help garbage collection.
+	 */
 	override public function destroy():Void
 	{
 		super.destroy();
 	}
 
-	
+	/**
+	 * Function that is called once every frame.
+	 */
 	override public function update():Void
 	{
 		super.update();
+		switch(turn)
+		{
+			case Turn.ENEMY:
+				{		
+					
+					if (!Player.Update())
+					{
+						turn = Turn.PLAYER;
+					}					
+				}
+			case Turn.PLAYER:
+				{
+					
+					if (!Enemy.Update())
+					{
+						turn = Turn.ENEMY;
+					}
+					
+				}
+		}	
 	}	
 }
