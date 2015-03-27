@@ -8,11 +8,15 @@ class Player extends FlxSpriteGroup
 	
 	var playerSprite:FlxSprite;
 	
+	public var playerStatus:Status;
+	
 	public function new() 
 	{
 		super();
 		playerSprite = new FlxSprite();
 		add(playerSprite);
+		
+		playerStatus = Status.DONE;
 	}
 	
 	public static inline function getPlayer():Player
@@ -26,7 +30,9 @@ class Player extends FlxSpriteGroup
 	
 	override function update():Void
 	{
-		
+		//pokud je starting, tak se přepne na deciding
+		//pokud deciding, tak čeká na vstup od hráče a po přijetí se přepne an waiting
+		//pokud tak čeká
 	}
 	
 	

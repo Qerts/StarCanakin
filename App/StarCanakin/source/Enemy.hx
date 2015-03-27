@@ -22,6 +22,8 @@ class Enemy extends FlxSpriteGroup
 	
 	var defaultShellPosition:FlxPoint;
 	
+	public var enemyStatus:Status;
+	
 	public function new() 
 	{
 		super();
@@ -40,10 +42,18 @@ class Enemy extends FlxSpriteGroup
 		//enemy.makeGraphic(FlxColor.BLUE,32,32);
 		add(enemy);		
 		
+		enemyStatus = Status.DONE;
+		
 	}
 	
 	override function update():Void
 	{
+		//pokud je starting, tak se přepne na deciding
+		//pokud deciding, tak se rozhodne a přepne se na waiting
+		//pokud tak čeká
+		
+		
+		
 		
 		if (FlxG.mouse.justReleased && shell.alive)
 		{
