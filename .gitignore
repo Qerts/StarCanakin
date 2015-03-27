@@ -44,3 +44,5 @@ Temporary Items
 
 export
 StarCanakin.hxproj
+*.hxproj
+App/StarCanakin/StarCanakin.hxproj
