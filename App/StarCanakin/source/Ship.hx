@@ -83,8 +83,8 @@ class Ship extends FlxSpriteGroup
 		
 		while (totalPoints != 0)
 		{
-			var rand = FlxRandom.intRanged(0, 50);
-			
+			var rand = FlxRandom.intRanged(0, 100);
+			trace(rand);
 			if (rand < 50)
 			{
 				shield++;
