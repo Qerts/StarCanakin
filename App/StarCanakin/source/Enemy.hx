@@ -46,7 +46,8 @@ class Enemy extends Ship
 		
 		status = Status.WAITING;
 		
-		initStats();
+		initStats(10);
+		trace(weaponPower,shield,shieldRecovery);
 	}
 	
 	override function update():Void
@@ -66,7 +67,9 @@ class Enemy extends Ship
 		
 		
 		
-		
+		/*
+		 * 
+		 * testovaci pohyb
 		if (FlxG.mouse.justReleased && shell.alive)
 		{
 			shell.kill();
@@ -81,6 +84,8 @@ class Enemy extends Ship
 		}
 		
 		shell.x += 5;
+		
+		*/
 		
 		switch (random) 
 		{

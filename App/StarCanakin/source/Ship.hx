@@ -42,15 +42,61 @@ class Ship extends FlxSpriteGroup
 	
 	private function initStats(level:Int = 1) 
 	{
-		// celkove mame k dispozici 6 statsu
-		// maximalni level hrace bude 10
-		// za kazdy novy level hrac dostane 1 ktery muze investovat
-		// celkovy startovaci pocet statsu je 3 * 6 + level. 
-		// tzn : 1 level - 18 statsu.
-		// 5 level - 23 statsu
-		// minimalni startovaci pocet bodu v kazdem statsu je 1, maximalni je 4 + level / 2. (?) 
-		// algoritmus na tvoreni statsu musi pri tvoreni lode vzdycky vycerpat vsechny startovaci statsy
+		/*
+		 * Rozdělování statsů
+		- HP - rozmezí 6(+lvl) - 8 (+lvl). Při přirozeném postupu hráče se HP zvyšují samostatně z každým lvl.
+		- Energy  - pouze 1 za bitvu ANEBO jestliže je HP rozmezí v dolní hranici tak energy je 2 a jestliže je v horní tak 1. Tzn na lvl 1 jestliže je 7 nebo 8 HP,energy je 2. Jestliže je 8 - 9 hp, energy je 1
+		- Luck - (návrh přejmenování na instinct) - 5 na začátku, s každým levelem se zvyšuje náhodně v rozmezí 2 - 4 (anebo 2 - 3 - možnost modifikace). Tento údaj je procento. Ještě nevím jestli luck má být pouze u hráče anebo i u nepřítele. Uvidíme
+		- 3 statsy - shield, shield recovery a weapon power - 10 + lvl bodů:
+		-  weapon power - dolní rozmezi 3 (+ lvl) - horní rozmezí - 5 (+lvl)
+		- Shield + shield recovery - bez rozmezí, minimální počet bodů je 2
+		*/
 		
+		
+		hitpoints = FlxRandom.intRanged(6 + level, 9 + level);
+		
+		if (hitpoints <= 9 - level)
+		{
+			energyLevel = 2;
+		}else 
+		{
+			energyLevel = 1;
+		}
+		
+		luck = 5;
+		for (a in 0...level)
+		{
+			var randLuck = FlxRandom.intRanged(2, 3);
+			luck += randLuck;
+		}
+		
+		var totalPoints = 10 + level;
+		
+		weaponPower = FlxRandom.intRanged(3 + level, 5 + level);
+		totalPoints -= weaponPower;
+		
+		shield = 2;
+		shieldRecovery = 2;
+		
+		totalPoints -= shield + shieldRecovery;
+		//trace(totalPoints);
+		
+		while (totalPoints != 0)
+		{
+			var rand = FlxRandom.intRanged(0, 50);
+			
+			if (rand < 50)
+			{
+				shield++;
+				totalPoints--;
+			}else
+			{
+				shieldRecovery++;
+				totalPoints--;
+			}
+		}
+		
+		/*
 		var lvlForSum:Int = Std.int(level / 2);
 		var pointsLeft:Int = 18 + level;				//body, které zbývají k rozdělení
 		
@@ -121,6 +167,7 @@ class Ship extends FlxSpriteGroup
 		luckTmp = 0;
 		
 		isAlive = true;
+		*/
 	}
 	
 	///
