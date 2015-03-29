@@ -55,7 +55,7 @@ class Ship extends FlxSpriteGroup
 		
 		hitpoints = FlxRandom.intRanged(6 + level, 9 + level);
 		
-		if (hitpoints <= 9 - level)
+		if (hitpoints <= (9 + level)-2)
 		{
 			energyLevel = 2;
 		}else 

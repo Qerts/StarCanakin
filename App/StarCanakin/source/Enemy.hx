@@ -46,8 +46,8 @@ class Enemy extends Ship
 		
 		status = Status.WAITING;
 		
-		initStats(10);
-		trace(weaponPower,shield,shieldRecovery);
+		initStats(7);
+		trace(hitpoints,energyLevel,luck,weaponPower,shield,shieldRecovery);
 	}
 	
 	override function update():Void
