@@ -7,7 +7,7 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.util.FlxVelocity;
 import flixel.util.FlxCollision;
-
+import flixel.FlxObject;
 
 /**
  * ...
@@ -16,11 +16,8 @@ import flixel.util.FlxCollision;
 class Enemy extends Ship
 {
     var random:Int;
-	
-	var shell:FlxSprite;
-	var enemy:FlxSprite;
-	
-	var defaultShellPosition:FlxPoint;
+	var ship:FlxSpriteGroup;
+	//var defaultShellPosition:FlxPoint;
 	
 	
 	
@@ -31,18 +28,15 @@ class Enemy extends Ship
 		super();
 		random = FlxRandom.intRanged(1, 4);
 		
-		defaultShellPosition = new FlxPoint(100, 100);
+		//defaultShellPosition = new FlxPoint(100, 100);
 		
-		shell = new FlxSprite();
-		shell.loadGraphic("assets/images/plate.png");
-		shell.setPosition(100, 100);
-
-		add(shell);
-				
-		enemy = new FlxSprite();
-		enemy.setPosition(500,100);
-		//enemy.makeGraphic(FlxColor.BLUE,32,32);
-		add(enemy);		
+		ship = new FlxSpriteGroup();
+		//ship.add(new FlxSprite("assets/images/starship_pattern.png"));
+		ship.add(ShipGenerator.getShip());
+		add(ship);
+		
+		ship.setPosition(FlxG.width * 0.95-ship.width,FlxG.height*0.15);
+		ship.angle = 180;
 		
 		status = Status.WAITING;
 		

@@ -29,7 +29,7 @@ class PlayState extends FlxState
 		//FlxG.debugger.drawDebug = true;
 		//inicializace komponent lvlu
 		player = Player.getPlayer();	//pozor, singleton, při každé smrti je nutné objekt zničit nebo vynulovat	
-		player.setPosition(FlxG.width * 0.1, FlxG.height * 0.1);
+		
 		
 		enemy = new Enemy();
 		
