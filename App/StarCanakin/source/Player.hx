@@ -60,9 +60,4 @@ class Player extends Ship
 	
 	
 	
-	private function evade() { }
-	private function attack() { }
-	private function increaseOffense() { }
-	private function increaseDefense() { }
-	
 }

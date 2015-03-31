@@ -49,7 +49,27 @@ class Enemy extends Ship
 		//pokud je starting, tak se přepne na deciding
 		if (status == Status.STARTING) 
 		{
-			//todo
+			//pro účely testování je nastaveno na random
+			if (decision == Decision.NOTDECIDED) 
+			{
+				switch (FlxRandom.intRanged(1,5)) 
+				{
+					case 1:
+						decision = Decision.ATTACK;
+					case 2:
+						decision = Decision.BOOSTHP;
+					case 3:
+						decision = Decision.BOOSTSHIELD;
+					case 4:
+						decision = Decision.BOOSTSHIELDRECOVERY;
+					case 5:
+						decision = Decision.EVADE;
+						
+						
+					default:
+						
+				}
+			}
 			status = Status.DECIDING;
 		}
 		//pokud deciding, tak se rozhodne a přepne se na waiting
@@ -81,30 +101,8 @@ class Enemy extends Ship
 		
 		*/
 		
-		switch (random) 
-		{
-			case 1:
-				evade();
-			case 2:
-				attack();
-			case 3:
-				increaseDefense();
-			case 4:
-				increaseOffense();
-			default:
-				attack();
-				
-		}
-	}
-	
-	private function evade() { }
-	
-	private function attack() 
-	{ 
 		
 	}
 	
-	private function increaseOffense() { }
-	private function increaseDefense() { }
 	
 }

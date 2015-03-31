@@ -47,9 +47,9 @@ class Ship extends FlxSpriteGroup
 		CooldownForEvade = 0;
 		decision = Decision.NOTDECIDED;
 		
-		currentEnergy = 10;
-		currentHP = 10;
-		currentShield = 10;
+		currentEnergy = 0;
+		currentHP = 0;
+		currentShield = 0;
 		
 		hitpointsTmp = 0;
 		shieldTmp = 0;
@@ -59,6 +59,8 @@ class Ship extends FlxSpriteGroup
 		luckTmp = 0;
 		
 		isAlive = true;
+		level = 1;					//pro testovací účely, smazat
+		initStats();
 	}
 	
 	private function initStats(level:Int = 1) 
@@ -196,17 +198,16 @@ class Ship extends FlxSpriteGroup
 	///
 	public function GetDecision():Decision
 	{
-		var tmpDec:Decision = decision;
-		decision = Decision.NOTDECIDED;
-		trace(tmpDec);
-		return tmpDec;
+		return decision;
 	}
+	
 	
 	///
 	//Tato metoda vypočte a vrátí hodnotu útoku. Viz pravidlo v OneNote
 	///
 	public function Attack():Int
 	{
+		trace(weaponPower, level);
 		//jestli projde critical hit (nastaveno na 10%)
 		if (FlxRandom.intRanged(luck, 100) <= 10) 
 		{
@@ -339,5 +340,12 @@ class Ship extends FlxSpriteGroup
 		{
 			CooldownForEvade--;
 		}
+	}
+	
+	public function SetDecision(dec:Decision)
+	{
+		this.decision = dec;
+		trace(this.decision);
+		status = Status.WAITING;
 	}
 }

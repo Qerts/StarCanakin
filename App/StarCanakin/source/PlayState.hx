@@ -80,6 +80,7 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		trace(player.GetDecision(), enemy.GetDecision());
 		//pokud oba mají status waiting, tak v této třídě porběhne vyhodnocení akcí
 		if (enemy.status == Status.WAITING && player.status == Status.WAITING) 
 		{
@@ -135,18 +136,20 @@ class PlayState extends FlxState
 			pDMG = Std.int(pDMG * eEVADATION);
 			enemy.DoDamage(pDMG);
 			
-			trace(player.GetDecision());
-			trace(enemy.GetDecision());
+			trace(player.GetDecision(), enemy.GetDecision());
 			//u obou lodí je zavolána funkce pro snížení případných cooldownů
 			player.DecreaseCooldowns();
 			enemy.DecreaseCooldowns();
-			//nastavit obě lodě na done
+			//nastavit obě lodě na done			
 			enemy.status = Status.DONE;
 			player.status = Status.DONE;
 		}
 		if (enemy.status == Status.DONE && player.status == Status.DONE)
 		{
-			//todo
+			//nastavit obě lodě na nerozhodnutý stav
+			player.SetDecision(Decision.NOTDECIDED);
+			enemy.SetDecision(Decision.NOTDECIDED);
+			
 			//pokud jsou dokončený všechny případné akce stavu done, přepne se znovu na starting
 			enemy.status = Status.STARTING;
 			player.status = Status.STARTING;
@@ -154,14 +157,16 @@ class PlayState extends FlxState
 		
 	}
 	
+	
+	
 //#region Button Methods
 	private function AttackButton()
 	{
-		
+		player.SetDecision(Decision.ATTACK);
 	}
 	private function EvadeButton()
 	{
-		
+		player.SetDecision(Decision.EVADE);
 	}
 	private function BoostButton() 
 	{
@@ -173,9 +178,18 @@ class PlayState extends FlxState
 		buttonBoostSR.visible = true;
 		buttonEvade.visible = false;		
 	}
-	private function BoostHPButton() { }
-	private function BoostSButton() { }
-	private function BoostSRButton() { }
+	private function BoostHPButton() 
+	{ 
+		player.SetDecision(Decision.BOOSTHP);
+	}
+	private function BoostSButton() 
+	{
+		player.SetDecision(Decision.BOOSTSHIELD);
+	}
+	private function BoostSRButton() 
+	{
+		player.SetDecision(Decision.BOOSTSHIELDRECOVERY);
+	}
 	private function BoostExitButton() 
 	{
 		buttonBoost.visible = true;
