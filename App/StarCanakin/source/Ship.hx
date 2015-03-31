@@ -12,6 +12,8 @@ class Ship extends FlxSpriteGroup
 	public var status:Status;
 	public var isAlive:Bool;
 	
+	var decision:Decision;
+	
 	//deklarace statů
 	var hitpoints:Int;
 	var shield:Int;
@@ -34,10 +36,29 @@ class Ship extends FlxSpriteGroup
 	var currentEnergy:Int;
 	
 	public var level:Int;
+	
+	//Cooldowny
+	public var CooldownForEvade:Int;
 
 	public function new() 
 	{
-		super();		
+		super();	
+		
+		CooldownForEvade = 0;
+		decision = Decision.NOTDECIDED;
+		
+		currentEnergy = 10;
+		currentHP = 10;
+		currentShield = 10;
+		
+		hitpointsTmp = 0;
+		shieldTmp = 0;
+		shieldRecoveryTmp = 0;
+		weaponPowerTmp = 0;
+		energyLevelTmp = 0;
+		luckTmp = 0;
+		
+		isAlive = true;
 	}
 	
 	private function initStats(level:Int = 1) 
@@ -171,22 +192,41 @@ class Ship extends FlxSpriteGroup
 	}
 	
 	///
-	//Tato metoda vypočte a vrátí hodnotu útoku, která dále může být v playstate vyhodnocena s obranou druhé lodi.
-	//Hodnota je počítána od 1 do síly zbraní lodě. Vzhledem k počátečním statům se to zdá vyrovnané, je nutné testování.
-	//Započítání štěstí do útoku je nutné ještě probrat, pokud by štěstí nebylo možné nastavit na vysokou hodnotu, tak by
-	//mohlo být nastaveno jako dolní mez randomu.
+	//Tato metoda vrací typ akce, který loď má provést.
+	///
+	public function GetDecision():Decision
+	{
+		var tmpDec:Decision = decision;
+		decision = Decision.NOTDECIDED;
+		trace(tmpDec);
+		return tmpDec;
+	}
+	
+	///
+	//Tato metoda vypočte a vrátí hodnotu útoku. Viz pravidlo v OneNote
 	///
 	public function Attack():Int
 	{
-		return FlxRandom.intRanged(1, weaponPower + weaponPowerTmp);
+		//jestli projde critical hit (nastaveno na 10%)
+		if (FlxRandom.intRanged(luck, 100) <= 10) 
+		{
+			return FlxRandom.intRanged(weaponPower - 1, weaponPower + level);
+		}
+		return FlxRandom.intRanged(weaponPower - 1, weaponPowerTmp + 1);
 	}
 	///
 	//Tato metoda vypočte a vrátí hodnotu uhnutí, která je uvedena v rozmezí 1 - 10 a reprezentuje procenta.
 	//Overpower štěstí by mělo být řešeno omezením velikosti statu luck.
 	///
-	public function Evade():Int
+	public function Evade():Float
 	{
-		return FlxRandom.intRanged(luck + luckTmp, 10);
+		if ((FlxRandom.intRanged(1,100) + luck) > 75) 
+		{
+			return 0.0;
+		}else 
+		{
+			return 0.5;
+		}
 	}
 	///
 	//Tato metoda vrací hodnotu štítu pro použití ve vyhodnocení střetu.
@@ -201,14 +241,14 @@ class Ship extends FlxSpriteGroup
 	public function GetHull():Int 
 	{
 		return currentHP;
-	}
+	}/*
 	///
 	//Tato metoda vrací hodnotu štítu pro použití ve vyhodnocení střetu.
 	///
 	public function GetEnergy():Int 
 	{
 		return currentEnergy;
-	}	
+	}	*/
 	///
 	//Tato metoda by měla být volána na začátku nebo konci každého kola pro obnovéení štítu v závislosti na shieldRecovery.
 	///
@@ -219,7 +259,7 @@ class Ship extends FlxSpriteGroup
 		{
 			currentShield = shield;
 		}
-	}
+	}/*
 	///
 	//Tato metoda by měla být volána na začátku nebo konci každého kola pro obnovéení energie.
 	///
@@ -230,13 +270,13 @@ class Ship extends FlxSpriteGroup
 		{
 			currentEnergy = energyLevel;
 		}
-	}
+	}*/
 	///
 	//Tato metoda slouží k poškození lodi. Poškodí štít a pokud jej zničí a projde skrze, poškodí loď.
 	///
 	public function DoDamage(dmg:Int) 
 	{ 
-		currentShield -= dmg;
+		currentShield =- dmg;
 		if (currentShield < 0) 
 		{
 			currentHP += currentShield;
@@ -290,6 +330,14 @@ class Ship extends FlxSpriteGroup
 				case StatName.WeaponPower:
 					weaponPower++;					
 			}
+		}
+	}
+	
+	public function DecreaseCooldowns()
+	{
+		if (CooldownForEvade > 0) 
+		{
+			CooldownForEvade--;
 		}
 	}
 }
